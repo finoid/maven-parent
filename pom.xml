@@ -7,6 +7,7 @@
     <groupId>io.github.finoid</groupId>
     <artifactId>parent</artifactId>
     <version>main</version>
+    <name>finoid-maven-parent</name>
     <description>Finoid Parent is a Maven parent POM that centralizes plugin configurations and build conventions used
         across Finoid projects. It provides a consistent setup for building, testing, and deploying Maven artifacts as
         part of the Finoid developer experience.
