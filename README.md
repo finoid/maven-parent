@@ -9,3 +9,10 @@ part of the Finoid developer experience.
 </div>
 
 The following plugins are used:
+
+## Bash configuration
+To simplify running the Code Quality Maven Plugin, you can add the following alias to your shell configuration (e.g. ~/.bashrc or ~/.zshrc):
+
+```bash
+alias cq='./mvnw clean generate-sources io.github.finoid:codequality-maven-plugin:code-quality@maven-code-quality'
+```

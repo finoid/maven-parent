@@ -26,9 +26,6 @@ jobs:
           server-password: OSSRH_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
 
-      - name: Build and Test
-        run: mvn clean verify --batch-mode
-      
       - name: Determine version from tag
         id: version
         run: |
