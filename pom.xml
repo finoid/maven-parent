@@ -15,10 +15,10 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>21</java.version>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.release>21</maven.compiler.release>
+        <java.version>17</java.version>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -26,6 +26,7 @@
         <maven.minimum.version>3.9.6</maven.minimum.version>
 
         <!-- Plugin versions -->
+        <codequality-maven-plugin.version>0.10.0</codequality-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
@@ -33,6 +34,18 @@
         <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
         <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+
+        <!-- Code quality feature flags and configuration -->
+        <code-quality.feature.enabled>true</code-quality.feature.enabled>
+        <code-quality.feature.checker-framework>false</code-quality.feature.checker-framework>
+        <code-quality.feature.checker-framework.permissive>true</code-quality.feature.checker-framework.permissive>
+        <code-quality.feature.checkstyle>true</code-quality.feature.checkstyle>
+        <code-quality.feature.checkstyle.permissive>false</code-quality.feature.checkstyle.permissive>
+        <code-quality.feature.error-prone>true</code-quality.feature.error-prone>
+        <code-quality.feature.error-prone.permissive>false</code-quality.feature.error-prone.permissive>
+        <code-quality.feature.null-away>true</code-quality.feature.null-away>
+        <!--suppress CheckTagEmptyBody -->
+        <code-quality.configuration.checkstyle.suppression-location></code-quality.configuration.checkstyle.suppression-location>
     </properties>
 
     <developers>
@@ -62,6 +75,50 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.github.finoid</groupId>
+                <artifactId>codequality-maven-plugin</artifactId>
+                <version>${codequality-maven-plugin.version}</version>
+                <!-- The plugin must be registered as an extension for the error-prone static analyzer to function properly -->
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>maven-code-quality</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>code-quality</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <codeQuality>
+                        <enabled>${code-quality.feature.enabled}</enabled>
+                        <stepLogLevel>DEBUG</stepLogLevel>
+                        <checkstyle>
+                            <enabled>${code-quality.feature.checkstyle}</enabled>
+                            <permissive>${code-quality.feature.checkstyle.permissive}</permissive>
+                            <executionMain>
+                                <suppressionLocation>${code-quality.configuration.checkstyle.suppression-location}
+                                </suppressionLocation>
+                            </executionMain>
+                            <executionTest>
+                                <suppressionLocation>${code-quality.configuration.checkstyle.suppression-location}
+                                </suppressionLocation>
+                            </executionTest>
+                        </checkstyle>
+                        <errorProne>
+                            <enabled>${code-quality.feature.error-prone}</enabled>
+                            <permissive>${code-quality.feature.error-prone.permissive}</permissive>
+                            <nullAwayEnabled>${code-quality.feature.null-away}</nullAwayEnabled>
+                        </errorProne>
+                        <checkerFramework>
+                            <enabled>${code-quality.feature.checker-framework}</enabled>
+                            <permissive>${code-quality.feature.checker-framework.permissive}</permissive>
+                        </checkerFramework>
+                    </codeQuality>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -117,7 +174,7 @@
                                 </requireMavenVersion>
                                 <!-- Ref:
                                 https://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html -->
-                                <dependencyConvergence />
+                                <dependencyConvergence/>
                                 <!--https://maven.apache.org/enforcer/enforcer-rules/bannedPlugins.html -->
                                 <bannedPlugins>
                                     <level>WARN</level>
@@ -125,7 +182,8 @@
                                         <exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
                                     </excludes>
                                     <message>Please consider using the maven-invoker-plugin
-                                        (http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
+                                        (http://maven.apache.org/plugins/maven-invoker-plugin/)!
+                                    </message>
                                 </bannedPlugins>
                                 <!-- Ref:
                                 https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html -->
@@ -133,7 +191,7 @@
                                     <message>No Snapshots allowed</message>
                                     <onlyWhenRelease>${enforce-only-when-release}</onlyWhenRelease>
                                 </requireReleaseDeps>
-                                <banDuplicatePomDependencyVersions />
+                                <banDuplicatePomDependencyVersions/>
                             </rules>
                         </configuration>
                     </execution>
