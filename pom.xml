@@ -24,11 +24,16 @@
 
         <maven.minimum.version>3.9.6</maven.minimum.version>
 
+        <!-- Reproducible build properties -->
+        <project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
+
+        <!-- Dependencies -->
         <extra-enforcer-rules.version>1.10.0</extra-enforcer-rules.version>
 
         <!-- Plugin versions -->
         <codequality-maven-plugin.version>0.12.0</codequality-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <maven-artifact-plugin.version>3.4.1</maven-artifact-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.6.0</maven-enforcer-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
@@ -145,6 +150,21 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-artifact-plugin</artifactId>
+                <version>${maven-artifact-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>buildinfo</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>buildinfo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Maven compiler configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -249,9 +269,15 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
-                    <!-- Disables warnings related to Javadoc -->
-                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <charset>${project.build.sourceEncoding}</charset>
+                    <docencoding>${project.build.sourceEncoding}</docencoding>
+                    <!-- Reproducible javadoc -->
+                    <notimestamp>true</notimestamp>
+                    <quiet>true</quiet>
+                    <doclint>none</doclint>
                 </configuration>
+
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
