@@ -24,6 +24,8 @@
 
         <maven.minimum.version>3.9.6</maven.minimum.version>
 
+        <extra-enforcer-rules.version>1.10.0</extra-enforcer-rules.version>
+
         <!-- Plugin versions -->
         <codequality-maven-plugin.version>0.11.0</codequality-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
@@ -160,6 +162,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <version>${maven-enforcer-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>${extra-enforcer-rules.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -168,13 +177,15 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <requireMavenVersion>
-                                    <version>${maven.minimum.version}</version>
-                                </requireMavenVersion>
-                                <!-- Ref:
-                                https://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html -->
-                                <dependencyConvergence/>
-                                <!--https://maven.apache.org/enforcer/enforcer-rules/bannedPlugins.html -->
+                                <banCircularDependencies/>
+                                <banDuplicateClasses>
+                                    <findAllDuplicates>true</findAllDuplicates>
+                                    <ignoreClasses>
+                                        <ignoreClass>module-info</ignoreClass>
+                                    </ignoreClasses>
+                                </banDuplicateClasses>
+                                <banDuplicatePomDependencyVersions/>
+                                <!-- https://maven.apache.org/enforcer/enforcer-rules/bannedPlugins.html -->
                                 <bannedPlugins>
                                     <level>WARN</level>
                                     <excludes>
@@ -184,12 +195,36 @@
                                         (http://maven.apache.org/plugins/maven-invoker-plugin/)!
                                     </message>
                                 </bannedPlugins>
-                                <!-- See: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html -->
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>commons-logging:commons-logging</exclude>
+                                        <exclude>log4j:log4j</exclude>
+                                        <!-- Ban vulnerable versions -->
+                                        <exclude>log4j:log4j:[,2.15.0)</exclude>
+                                    </excludes>
+                                </bannedDependencies>
+                                <!-- https://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html -->
+                                <dependencyConvergence/>
+                                <requireEnvironmentVariable>
+                                    <variableName>JAVA_HOME</variableName>
+                                </requireEnvironmentVariable>
+                                <requireJavaVersion>
+                                    <version>[17,)</version>
+                                    <message>Java 17 or higher is required</message>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${maven.minimum.version}</version>
+                                </requireMavenVersion>
+                                <requireProperty>
+                                    <property>project.version</property>
+                                    <property>java.version</property>
+                                    <message>You must set the ${property} property!</message>
+                                </requireProperty>
+                                <!-- https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html -->
                                 <requireReleaseDeps>
                                     <message>No Snapshots allowed</message>
                                     <onlyWhenRelease>true</onlyWhenRelease>
                                 </requireReleaseDeps>
-                                <banDuplicatePomDependencyVersions/>
                             </rules>
                         </configuration>
                     </execution>
