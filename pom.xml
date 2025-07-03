@@ -22,7 +22,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <enforce-only-when-release>true</enforce-only-when-release>
         <maven.minimum.version>3.9.6</maven.minimum.version>
 
         <!-- Plugin versions -->
@@ -185,10 +184,10 @@
                                         (http://maven.apache.org/plugins/maven-invoker-plugin/)!
                                     </message>
                                 </bannedPlugins>
-                                <!-- Ref: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html -->
+                                <!-- See: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html -->
                                 <requireReleaseDeps>
                                     <message>No Snapshots allowed</message>
-                                    <onlyWhenRelease>${enforce-only-when-release}</onlyWhenRelease>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
                                 </requireReleaseDeps>
                                 <banDuplicatePomDependencyVersions/>
                             </rules>
