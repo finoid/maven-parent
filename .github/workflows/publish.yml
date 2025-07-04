@@ -65,4 +65,5 @@ jobs:
       - name: Verify reproducible build
         run: |
           echo "Verifying build reproducibility..."
-          mvn clean verify artifact:compare -Dproject.build.outputTimestamp="${BUILD_TIMESTAMP}"
+          mvn clean verify -Dproject.build.outputTimestamp="${BUILD_TIMESTAMP}"
+          mvn artifact:compare -Dproject.build.outputTimestamp="${BUILD_TIMESTAMP}"
