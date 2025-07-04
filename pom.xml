@@ -6,7 +6,8 @@
 
     <groupId>io.github.finoid</groupId>
     <artifactId>parent</artifactId>
-    <version>main</version>
+    <!-- This version id is overridden on deploy, so this number is only applicable for local usage -->
+    <version>0.10.0</version>
     <name>finoid-maven-parent</name>
     <description>Finoid Parent is a Maven parent POM that centralizes plugin configurations and build conventions used
         across Finoid projects. It provides a consistent setup for building, testing, and deploying Maven artifacts as
@@ -203,6 +204,7 @@
                                     <ignoreClasses>
                                         <ignoreClass>module-info</ignoreClass>
                                     </ignoreClasses>
+                                    <ignoreWhenIdentical>true</ignoreWhenIdentical>
                                 </banDuplicateClasses>
                                 <banDuplicatePomDependencyVersions/>
                                 <!-- https://maven.apache.org/enforcer/enforcer-rules/bannedPlugins.html -->
