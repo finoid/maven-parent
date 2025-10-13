@@ -33,7 +33,7 @@
 
         <!-- Plugin versions -->
         <codequality-maven-plugin.version>0.12.4</codequality-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-artifact-plugin.version>3.6.1</maven-artifact-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
