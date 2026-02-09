@@ -32,7 +32,7 @@
         <extra-enforcer-rules.version>1.11.0</extra-enforcer-rules.version>
 
         <!-- Plugin versions -->
-        <codequality-maven-plugin.version>0.12.9</codequality-maven-plugin.version>
+        <codequality-maven-plugin.version>0.12.10</codequality-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-artifact-plugin.version>3.6.1</maven-artifact-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
